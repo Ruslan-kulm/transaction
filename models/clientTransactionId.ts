@@ -1,21 +1,21 @@
 import { Model } from 'sequelize'
 
-interface ReqTransactionAttributes {
+interface ClientTransactionIdAttributes {
   client_id: string
   externalId: string
   transactionId: string
 }
 
 module.exports = (sequelize: any, DataTypes: any) => {
-  class ReqTransaction
-    extends Model<ReqTransactionAttributes>
-    implements ReqTransactionAttributes
+  class ClientTransactionId
+    extends Model<ClientTransactionIdAttributes>
+    implements ClientTransactionIdAttributes
   {
     client_id!: string
     externalId!: string
     transactionId!: string
   }
-  ReqTransaction.init(
+  ClientTransactionId.init(
     {
       client_id: {
         type: DataTypes.STRING,
@@ -34,8 +34,8 @@ module.exports = (sequelize: any, DataTypes: any) => {
     },
     {
       sequelize,
-      modelName: 'ReqTransaction',
+      modelName: 'ClientTransactionId',
     }
   )
-  return ReqTransaction
+  return ClientTransactionId
 }
