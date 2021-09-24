@@ -5,7 +5,10 @@ import { v4 as uuid } from 'uuid'
 import db from '../models'
 import catchAsync from '../utils/catchAsync'
 import { AppError } from '../utils/Errors'
-import { TransactionInfoAttributes } from '../models/transactionInfo'
+import {
+  TransactionInfoAttributes,
+  TransactionInfoCreationAttributes,
+} from '../models/transactionInfo'
 import { ClientTransactionIdAttributes } from '../models/clientTransactionId'
 
 const getTransaction = catchAsync(
@@ -112,14 +115,7 @@ const isBank_response = (
 }
 
 const createTransactionOrError = async (req: Request) => {
-  const transactionId: string = uuid()
-  const clientTransactionIdAttributes: ClientTransactionIdAttributes = {
-    client_id: req.body.customerId,
-    externalId: req.body.id,
-    transactionId: transactionId,
-  }
-  const transactionInfoAttributes: TransactionInfoAttributes = {
-    id: transactionId,
+  const transactionInfoCreationAttributes: TransactionInfoCreationAttributes = {
     amount: req.body.amount,
     date: req.body.date,
     url: req.body.urlId,
@@ -128,15 +124,23 @@ const createTransactionOrError = async (req: Request) => {
 
   const t = await db.sequelize.transaction()
   try {
+    const transactionInfo = await db.TransactionInfo.create(
+      transactionInfoCreationAttributes,
+      { transaction: t }
+    )
+
+    const clientTransactionIdAttributes: ClientTransactionIdAttributes = {
+      client_id: req.body.customerId,
+      externalId: req.body.id,
+      transactionId: transactionInfo.id,
+    }
+
     await db.ClientTransactionId.create(
       clientTransactionIdAttributes,
 
       { transaction: t }
     )
-    const transactionInfo = await db.TransactionInfo.create(
-      transactionInfoAttributes,
-      { transaction: t }
-    )
+
     await t.commit()
     return transactionInfo
   } catch (error) {

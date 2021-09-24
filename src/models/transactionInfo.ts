@@ -1,4 +1,4 @@
-import { Model, UUIDV4 } from 'sequelize'
+import { Model, Optional, UUIDV4 } from 'sequelize'
 
 export interface TransactionInfoAttributes {
   id: string
@@ -7,6 +7,9 @@ export interface TransactionInfoAttributes {
   url: number
   status: string
 }
+
+export interface TransactionInfoCreationAttributes
+  extends Optional<TransactionInfoAttributes, 'id'> {}
 
 module.exports = (sequelize: any, DataTypes: any) => {
   class TransactionInfo
