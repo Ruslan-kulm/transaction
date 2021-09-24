@@ -1,6 +1,5 @@
 import dotenv from 'dotenv'
 dotenv.config({ path: './config.env' })
-const morgan = require('morgan')
 import db from './models'
 import app from './app'
 import importDevData from './seeders/importDevData'

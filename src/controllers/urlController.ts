@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express'
 import { UrlAttributes } from '../models/url'
 import db from '../models'
-import catchAsync from './../utils/catchAsync'
+import catchAsync from '../utils/catchAsync'
 import { AppError } from '../utils/Errors'
 
 const createUrl = catchAsync(
@@ -51,18 +51,19 @@ const deleteUrl = catchAsync(
 const updateUrl = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     delete req.body.id
-    const url = await db.Url.update(req.body, {
+    const result = await db.Url.update(req.body, {
       where: { id: Number(req.params.id) },
     })
 
-    if (url[0] === 0) {
+    //db.Url.update returns an array [0] - error, [1] - success
+    if (result[0] === 0) {
       return next(new AppError(`No urls found by ID ${req.params.id}`, 404))
     }
 
     res.status(200).json({
       status: 'success',
       data: {
-        data: url,
+        data: req.body,
       },
     })
   }

@@ -1,6 +1,6 @@
 import { Model } from 'sequelize'
 
-interface ClientTransactionIdAttributes {
+export interface ClientTransactionIdAttributes {
   client_id: string
   externalId: string
   transactionId: string

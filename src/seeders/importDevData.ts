@@ -1,4 +1,4 @@
-import db from './../models'
+import db from '../models'
 import { urls } from './urls'
 
 const importData = async () => {

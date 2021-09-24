@@ -1,8 +1,7 @@
-import { Model, Optional, UUIDV4 } from 'sequelize'
-import { UrlAttributes } from './url'
+import { Model, UUIDV4 } from 'sequelize'
 
-interface TransactionAttributes {
-  transactionId: string
+export interface TransactionInfoAttributes {
+  id: string
   amount: number
   date: Date
   url: number
@@ -10,19 +9,19 @@ interface TransactionAttributes {
 }
 
 module.exports = (sequelize: any, DataTypes: any) => {
-  class Transaction
-    extends Model<TransactionAttributes>
-    implements TransactionAttributes
+  class TransactionInfo
+    extends Model<TransactionInfoAttributes>
+    implements TransactionInfoAttributes
   {
-    transactionId!: string
+    id!: string
     amount!: number
     date!: Date
     url!: number
     status!: string
   }
-  Transaction.init(
+  TransactionInfo.init(
     {
-      transactionId: {
+      id: {
         type: DataTypes.UUID,
         defaultValue: UUIDV4,
         allowNull: false,
@@ -47,8 +46,8 @@ module.exports = (sequelize: any, DataTypes: any) => {
     },
     {
       sequelize,
-      modelName: 'Transaction',
+      modelName: 'TransactionInfo',
     }
   )
-  return Transaction
+  return TransactionInfo
 }

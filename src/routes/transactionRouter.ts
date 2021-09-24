@@ -1,4 +1,4 @@
-import checkSchema from './../validators/transactionValidator'
+import checkSchema from '../validators/transactionValidator'
 
 const express = require('express')
 import {
